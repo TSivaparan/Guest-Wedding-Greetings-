@@ -4,6 +4,7 @@ import { sb } from "../supabase";
 import type { Wish } from "../types";
 import { Frame, Lotus } from "../components/Ornaments";
 import WishCard from "../components/WishCard";
+import FrameBoard from "../components/FrameBoard";
 
 type Tab = "cards" | "board";
 interface PrintJob { list: Wish[]; cols: boolean }
@@ -86,7 +87,7 @@ function Dashboard({ onOut }: { onOut: () => void }) {
   return (
     <>
       <Frame wide>
-        <h1 className="names" style={{ fontSize: "1.9rem" }}>{COUPLE.groom} &amp; {COUPLE.bride}</h1>
+        <h1 className="names" style={{ fontSize: "1.9rem" }}>{COUPLE.bride} &amp; {COUPLE.groom}</h1>
         <p className="date"><span className="count">{list.length} of {rows.length} wishes</span></p>
         <div className="rule" />
 
@@ -98,7 +99,6 @@ function Dashboard({ onOut }: { onOut: () => void }) {
           <input className="search" placeholder="Search name or message" value={q} onChange={e => setQ(e.target.value)} />
           <span className="grow" />
           <button className="btn small" onClick={() => setJob({ list, cols: false })}>Print all cards</button>
-          <button className="btn small ghost" onClick={() => setJob({ list, cols: true })}>Print board</button>
           <button className="btn small ghost" onClick={() => save(`wedding-wishes-backup-${stamp()}.json`, JSON.stringify(rows, null, 2), "application/json")}>Backup (JSON)</button>
           <button className="btn small ghost" onClick={exportCsv}>Export CSV</button>
           <button className="btn small ghost" onClick={() => void load()}>Refresh</button>
@@ -119,7 +119,7 @@ function Dashboard({ onOut }: { onOut: () => void }) {
             ))}
           </div>
         ) : (
-          <div className="board">{list.map(w => <WishCard key={w.id} wish={w} />)}</div>
+          <FrameBoard wishes={rows} />
         )}
       </Frame>
 

@@ -78,7 +78,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 @media print{
   @page{margin:12mm}
   body{background:#fff!important}
-  body.printing .toran, body.printing .frame{display:none!important}
+  body.printing .toran,body.printing .frame{display:none!important}
   body.printing #printArea{display:block}
   body.printing .wcard{page-break-after:always;max-width:150mm;margin:0 auto}
   body.printing.cols .wcard{page-break-after:auto}
@@ -86,3 +86,82 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{
 }
 @media (max-width:420px){.names{font-size:1.9rem}.frame{margin:12px 10px 30px;padding:32px 18px 28px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- Framed wedding board (photo in the centre, wishes around it) ---------- */
+.fb-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 16px}
+.fb-controls .grow{flex:1}
+.fb-controls select{width:auto;padding:.35rem .6rem;font-size:.95rem}
+.fb-controls label.chk{display:flex;align-items:center;gap:6px;margin:0;font-weight:400}
+.fb-controls input[type=checkbox]{width:auto}
+.fb-controls label.btn{margin:0;cursor:pointer}
+.fb-note{width:100%;font-size:.9rem;color:var(--gold-light);margin:0}
+.fb-warn{color:#ffd1d1;font-weight:700}
+.fb-pick{width:100%;background:rgba(0,0,0,.2);border:1px solid var(--gold);padding:8px 12px;max-height:260px;overflow:auto}
+.fb-pick summary{cursor:pointer;color:var(--gold-light);font-weight:600}
+.fb-pick label{display:flex;gap:8px;align-items:flex-start;margin:.25rem 0;font-weight:400;font-size:.95rem}
+.fb-host{width:100%}
+.fb-wrap{position:relative;overflow:hidden;margin:0 auto;box-shadow:0 6px 30px rgba(0,0,0,.45)}
+.fb-scale{transform-origin:0 0}
+
+.fb-sheet{--s:1;--u:calc(var(--k)*var(--s));position:relative;display:flex;flex-direction:column;overflow:hidden;
+  --bg:#fff6e3;background:var(--bg);color:#4a0f1c;font-family:"Cormorant Garamond","Noto Serif Tamil",Georgia,serif;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.fb-toran{flex:none;height:calc(var(--k)*9mm);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='44'%3E%3Cpath d='M0 3Q24 12 48 3' fill='none' stroke='%23c8962e' stroke-width='2'/%3E%3Cpath d='M24 10C14 20 16 34 24 42 32 34 34 20 24 10Z' fill='%23c8962e'/%3E%3Cpath d='M24 14V38' stroke='%23fff6e3'/%3E%3C/svg%3E") repeat-x center top/auto 100%}
+.fb-edge{position:absolute;pointer-events:none;inset:calc(var(--k)*11mm) calc(var(--k)*5mm) calc(var(--k)*5mm);border:calc(var(--k)*.9mm) solid #c8962e}
+.fb-edge::before{content:"";position:absolute;inset:calc(var(--k)*1.6mm);border:calc(var(--k)*.25mm) solid #c8962e}
+.fb-head{flex:none;text-align:center;padding:calc(var(--k)*6mm) 0 calc(var(--k)*1mm)}
+.fb-names{margin:0;font-family:"Great Vibes","Cormorant Garamond",cursive;font-weight:400;font-size:calc(var(--k)*15mm);line-height:1.1;color:var(--tx-name,#7a1226)}
+.fb-names i{font-style:normal;color:#b98a3e;padding:0 .08em}
+.fb-sub{margin:calc(var(--k)*.5mm) 0 0;font-size:calc(var(--k)*3.4mm);letter-spacing:.28em;color:#a67c3b;font-weight:700;text-transform:uppercase}
+.fb-div{width:40%;height:calc(var(--k)*.4mm);margin:calc(var(--k)*2mm) auto 0;background:linear-gradient(90deg,transparent,#c8962e,transparent)}
+.fb-grid{flex:1;min-height:0;display:grid;
+  grid-template-columns:minmax(0,27fr) minmax(0,46fr) minmax(0,27fr);
+  grid-template-rows:minmax(0,31fr) minmax(0,38fr) minmax(0,31fr);
+  grid-template-areas:"top top top" "left photo right" "bottom bottom bottom";
+  padding:calc(var(--k)*3mm) calc(var(--k)*9mm) calc(var(--k)*9mm)}
+.fb-reg{min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:calc(var(--k)*1.5mm)}
+.fb-reg.top{grid-area:top}.fb-reg.left{grid-area:left}.fb-reg.right{grid-area:right}.fb-reg.bottom{grid-area:bottom}
+.fb-in{width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:calc(var(--u)*3.5mm) calc(var(--u)*4mm)}
+.fb-card{flex:0 1 auto;width:calc(var(--u)*44mm);max-width:100%;text-align:center;padding:calc(var(--u)*1mm);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.fb-msg{margin:0;font-style:italic;font-weight:600;font-size:calc(var(--u)*3.5mm);line-height:1.25;white-space:pre-wrap;overflow-wrap:anywhere}
+.fb-msg.ta{font-style:normal;font-weight:500;font-size:calc(var(--u)*2.9mm);line-height:1.45}
+.fb-sig{display:block;margin:calc(var(--u)*1mm) auto 0;height:calc(var(--u)*9mm);max-width:100%;object-fit:contain}
+.fb-name{display:block;font-weight:700;font-size:calc(var(--u)*3mm);line-height:1.2;color:var(--tx-name,#7a1226)}
+.fb-photo{grid-area:photo;display:flex;min-width:0;min-height:0;padding:calc(var(--k)*5mm);position:relative;z-index:1}
+.fb-pbox{position:relative;flex:1;min-width:0;min-height:0}
+.fb-pic{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;display:flex;align-items:center;justify-content:center;border:calc(var(--k)*1mm) solid #c8962e;box-shadow:0 0 0 calc(var(--k)*1.3mm) var(--bg,#fff6e3),0 0 0 calc(var(--k)*1.8mm) #c8962e;background:#efe0c6}
+.fb-pic img{display:block;width:100%;height:100%;object-fit:cover}
+.fb-ph{text-align:center;color:#a67c3b;padding:0 8%}
+.fb-ph span{display:block;font-family:"Great Vibes",cursive;font-size:calc(var(--k)*11mm);line-height:1.1}
+.fb-ph small{display:block;margin-top:calc(var(--k)*2mm);font-size:calc(var(--k)*3.2mm);letter-spacing:.15em;text-transform:uppercase}
+
+@media print{
+  body.printing-board{background:#fff!important;min-height:0!important;height:auto!important}
+  body.printing-board .toran,body.printing-board .frame>:not(.fb-root){display:none!important}
+  body.printing-board .frame{border:0!important;background:none!important;padding:0!important;margin:0!important;max-width:none!important;position:static!important}
+  body.printing-board .frame::before{display:none!important}
+  body.printing-board .fb-controls{display:none!important}
+  body.printing-board .fb-host{display:block}
+  body.printing-board .fb-wrap{width:auto!important;height:auto!important;box-shadow:none;overflow:visible;margin:0}
+  body.printing-board .fb-scale{transform:none!important}
+  body.printing-board .fb-sheet{page-break-after:avoid;break-after:avoid}
+}
+
+/* drag and drop layer */
+.fb-free{position:absolute;inset:0;z-index:3;pointer-events:none}
+.fb-card.free{position:absolute;pointer-events:auto}
+.fb-card:hover{outline:calc(var(--k)*.3mm) dashed rgba(200,150,46,.9);outline-offset:calc(var(--k)*.5mm)}
+.fb-card.drag{cursor:grabbing;outline:calc(var(--k)*.4mm) solid #c8962e;background:rgba(255,246,227,.85);z-index:5}
+.fb-sliders{width:100%;display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.fb-sliders .chk{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}
+.fb-sliders input[type=range]{width:150px;padding:0}
+@media print{
+  body.printing-board .fb-card:hover,body.printing-board .fb-card.drag{outline:none!important;background:none!important}
+}
+
+/* board colours + image download */
+.fb-controls input[type=color]{width:42px;height:32px;padding:0;border:2px solid var(--gold);border-radius:2px;background:none;cursor:pointer}
+.fb-controls input[type=number]{width:96px;padding:.3rem .5rem;font-size:.95rem}
+.fb-export .fb-note{width:auto;flex:1 1 260px}
+.fb-controls button:disabled{opacity:.6;cursor:wait}
